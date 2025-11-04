@@ -17,11 +17,25 @@ typedef struct {
     int tamanho;
 } Fila;
 
+// Definição da estrutura para a pilha de reserva de peças 
+#define CAPACIDADE_PILHA 3
+typedef struct {
+    Peca itens[CAPACIDADE_PILHA];
+    int topo;
+    int tamanho;
+} Pilha;
+
 // Função para inicializar a fila 
 void inicializarFila(Fila* fila) {
     fila->frente = 0;
     fila->tras = -1;
     fila-> tamanho = 0;
+}
+
+// Função para inicializar pilha
+void inicializarPilha(Pilha* pilha) {
+    pilha->topo = -1;
+    pilha-> tamanho = 0;
 }
 
 // Verifica se a fila está cheia 
@@ -30,8 +44,18 @@ int estaCheia(Fila* fila) {
 }
 
 // verifica se está vazia 
-int estaVAzia(Fila* fila) { 
+int estaVazia(Fila* fila) { 
     return fila->tamanho == 0;
+}
+
+// Verifica se a pilhla está cheia
+int pilhaCheia(Pilha* pilha) {
+    return pilha->tamanho == CAPACIDADE_PILHA;
+}
+
+// Verifica se a pilha está vazia
+int vaziaPilha(Pilha* pilha) {
+    return pilha->tamanho == 0;
 }
 
 // Insere uma nova peça no final da fila (enqueue)
@@ -46,9 +70,9 @@ void enfileirar(Fila* fila, Peca novaPeca) {
 
 // Remove e retorna a eça da frente da fila (dequeue)
 Peca desenfileirar(Fila* fila) {
-    Peca pecaVAzia = {' ', - 1}; 
-    if (estaVAzia(fila)) {
-        return pecaVAzia;
+    Peca pecaVazia = {' ', - 1}; 
+    if (estaVazia(fila)) {
+        return pecaVazia;
     }
     Peca pecaRemovida = fila->itens[fila->frente];
     fila->frente = (fila->frente + 1) % CAPACIDADE;
@@ -56,9 +80,25 @@ Peca desenfileirar(Fila* fila) {
     return pecaRemovida;
 }
 
+// Empilha uma nova peça no topo (push)
+void empilhar(Pilha* pilha, peca novaPeca) {
+    if (pilhaCheia(pilha)) {
+        return;
+    }
+    pilha->topo++;
+    pilha->itens[pilha->topo] = novaPeca;
+    pilha->tamanho++;
+}
+
+// Remove e retorna a peça do topo da pilha (pop)
+Peca desemplilhar(Pilha* pilha) {
+    Peca vaziaPilha = {' ', - 1};
+    return vaziaPilha;
+}
+
 void exibirFila(Fila* fila) {
     printf("Fila de peças \n");
-    if (estaVAzia(fila)) {
+    if (estaVazia(fila)) {
         printf("Vazia!\n");
         return;
     }
